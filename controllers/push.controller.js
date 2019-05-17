@@ -7,7 +7,7 @@ exports.sendPush = (req, res, next) => {
 
     debugger;
 
-    interval = setTimeout(() => {        
+    interval = setInterval(() => {        
 
         // Stop Interval
         if (new Date() == new Date('2019-06-05 00:00')) { stopInterval() }
@@ -16,30 +16,29 @@ exports.sendPush = (req, res, next) => {
 
         // Находим намаз и город по времени        
         let namazList = namazEventsByTime.filter(item => item.dateTime == currentDate);
+        if (namazList) return;
 
-        if (namazList) {
-
-            namazList.forEach(namazSingle => {
-                var payload = {
-                    notification: {
-                        title: namazSingle.title,
-                        body: namazSingle.body
-                    }
-                };
-
-                // По городу нужно найти всех пользователей
-                const users = findUsersByCity(namazSingle.city);
-
-                // Отправляем пуши по конетам
-                if (users) {
-                    users.forEach(user => {
-                        sendPush(user.userToken, payload);
-                    });
+        namazList.forEach(namazSingle => {
+            var payload = {
+                notification: {
+                    title: namazSingle.title,
+                    body: namazSingle.body
                 }
-            });
-        }
+            };
 
-    }, 1000);
+            // По городу нужно найти всех пользователей
+            const users = findUsersByCity(namazSingle.city);
+
+            // Отправляем пуши по конетам
+            if (users) {
+                users.forEach(user => {
+                    sendPush(user.userToken, payload);
+                });
+            }
+        });
+        
+
+    }, 60*1000);
 }
 
 const findUsersByCity = (cityId) => {
