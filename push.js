@@ -14,7 +14,7 @@ admin.initializeApp({ credential: admin.credential.cert(serviceAccount), databas
 
 const findUsersByCity = (cityId = 2) => {    
     return new Promise((resolve, reject) => {
-        User.find({ cityId: cityId }, (err, users) => {
+        User.find({ cityId: cityId, enabled: 'true' }, (err, users) => {
             if (err) { reject('User not found!') }            
             resolve(users);
         });
@@ -62,7 +62,7 @@ const start = () => {
             // Отправляем пуши            
             users.forEach(user => sendPush(user.token, payload));            
         });
-    }, 60*1000);
+    }, 6*1000);
 }
 
 /**

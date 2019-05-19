@@ -2,23 +2,6 @@ const request = require('request');
 const fetch = require("node-fetch");
 const moment = require('moment-hijri');
 const getCities = require('../data/cities');
-/**
- * Формирует список событие(фажр и сухур) из намаза
- * 
- * [
-    {
-        dateTime: '2019-05-17 18:05',
-        title: 'Аср',
-        body: 'Аср намазы кірді',
-        city: {
-            id: 2,
-            title: 'Алматы',
-            location: [43.238293, 76.945465]
-        }
-    }
- * ]
- */
-
 
 /**
  * Солнечный каленлар
@@ -67,36 +50,30 @@ getRamazanMonthInGregorianCalendar = ($namaz, $startDate, $endDate) => {
     });
 }
 
-
 /**
 * @return Namaz[]
 */
 const start = () => {
-    
-    let ramazanAllKazakhstanForOneMonth = [];
+    console.info(`App start`);
 
+    let ramazanAllKazakhstanForOneMonth = [];
     const ramazanStartDate = getRamazanStartDate();
     const ramazanEndDate = getRamazanEndDate();
-
-    // Get: KZ Cities
+    
     const cities = getCities();
 
     cities.forEach(async city => {
 
-        // Get Namaz For 1 year
-        const year = new Date().getFullYear();
-        const url = `http://namaz.muftyat.kz/api/times/${year}/${city.location[0]}/${city.location[1]}`;
+        // Get Namaz For 1 year        
+        const url = `http://namaz.muftyat.kz/api/times/${new Date().getFullYear()}/${city.location[0]}/${city.location[1]}`;
 
         let orazaListYear = await fetch(url);
-        orazaListYear = await orazaListYear.json();
-
-        debugger;
+        orazaListYear = await orazaListYear.json();        
 
         if (!orazaListYear && orazaListYear.result) return;
 
         const $namaz = combineArrays(orazaListYear.result);
         const $ramazanDatesInSunFormat = getRamazanMonthInGregorianCalendar($namaz, ramazanStartDate, ramazanEndDate);
-
 
         if (!$ramazanDatesInSunFormat) return;
 
@@ -105,16 +82,16 @@ const start = () => {
             let dateArr = orazaSingle.date.split('-');
 
             let suhur = {
-                title: 'Ауыз бекиту',
-                body: 'Ауыз бекітіп алыңыз',
+                title: 'Ауыз бекіту уақыты',
+                body: 'Алла жеңілдігін берсін!',
                 date: `${dateArr[2]}-${dateArr[1]}-${dateArr[0]} ${orazaSingle.Fajr}`,
                 city: city
             }
 
 
             let iftar = {
-                title: 'Ауызашар',
-                body: 'Алла қабыл еткей оразаңызды!',
+                title: 'Ауызашар уақыты',
+                body: 'Оразаңыз қабыл болсын!',
                 date: `${dateArr[2]}-${dateArr[1]}-${dateArr[0]} ${orazaSingle.Maghrib}`,
                 city: city
             }
@@ -123,9 +100,8 @@ const start = () => {
         });        
     });
 
-
     return new Promise((resolve, reject) => {
-        setTimeout(() => {        
+        setTimeout(() => {
             
             if(ramazanAllKazakhstanForOneMonth){
 
@@ -141,9 +117,7 @@ const start = () => {
     });    
 }
 
-
-exports.getRamazanKZ = async (req, res, next) => {
-              
+exports.getRamazanKZ = async (req, res, next) => {              
     let result = await start();    
     res.json(result);
 }

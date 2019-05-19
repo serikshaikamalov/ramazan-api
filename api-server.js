@@ -5,7 +5,6 @@ const cors = require('cors');
 
 const constants = require('./config/constants');
 const usersRoutes = require('./routes/user.route');
-const pushRoutes = require('./routes/push.route');
 const ramazanRoutes = require('./routes/ramazan.route');
 
 const app = express();
@@ -27,9 +26,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * Middleware: Resource
  */
 app.use('/users', usersRoutes);
-
-app.use('/push', pushRoutes);
-
 app.use('/ramazan', ramazanRoutes);
 
 /**
