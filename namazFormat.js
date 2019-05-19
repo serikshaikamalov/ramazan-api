@@ -107,16 +107,16 @@ const start = () => {
             let dateArr = orazaSingle.date.split('-');
 
             let suhur = {
-                title: 'Ауыз бекиту',
-                body: 'Ауыз бекітіп алыңыз',
+                title: 'Ауыз бекіту уақыты',
+                body: 'Алла жеңілдігін берсін!',
                 date: `${dateArr[2]}-${dateArr[1]}-${dateArr[0]} ${orazaSingle.Fajr}`,
                 city: city
             }
 
 
             let iftar = {
-                title: 'Ауызашар',
-                body: 'Алла қабыл еткей оразаңызды!',
+                title: 'Ауызашар уақыты',
+                body: 'Оразаңыз қабыл болсын!',
                 date: `${dateArr[2]}-${dateArr[1]}-${dateArr[0]} ${orazaSingle.Maghrib}`,
                 city: city
             }

@@ -6,7 +6,6 @@ let interval;
 exports.sendPush = (req, res, next) => {
 
     debugger;
-
     interval = setInterval(() => {        
 
         // Stop Interval
@@ -15,8 +14,8 @@ exports.sendPush = (req, res, next) => {
         const currentDate = moment().locale('uk').format('YYYY-MM-DD HH:mm');
 
         // Находим намаз и город по времени        
-        let namazList = namazEventsByTime.filter(item => item.dateTime == currentDate);
-        if (namazList) return;
+        let namazList = namazEventsByTime.filter(item => item.date == currentDate);
+        if (!namazList) return;
 
         namazList.forEach(namazSingle => {
             var payload = {
@@ -27,7 +26,7 @@ exports.sendPush = (req, res, next) => {
             };
 
             // По городу нужно найти всех пользователей
-            const users = findUsersByCity(namazSingle.city);
+            const users = findUsersByCity(namazSingle.city.id);
 
             // Отправляем пуши по конетам
             if (users) {
@@ -38,7 +37,7 @@ exports.sendPush = (req, res, next) => {
         });
         
 
-    }, 60*1000);
+    }, 6*1000);
 }
 
 const findUsersByCity = (cityId) => {
@@ -53,20 +52,6 @@ const findUsersByCity = (cityId) => {
     
     return users.filter(x => x.cityId == cityId);
 }
-
-// Храним намаз по времени
-// let namazEventsByTime = [
-//     {
-//         dateTime: '2019-05-17 18:05',
-//         title: 'Аср',
-//         body: 'Аср намазы кірді',
-//         city: {
-//             id: 2,
-//             title: 'Алматы',
-//             location: [43.238293, 76.945465]
-//         }
-//     }
-// ]
 
 const stopInterval = () => {
     clearInterval(interval);

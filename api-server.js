@@ -11,14 +11,6 @@ const ramazanRoutes = require('./routes/ramazan.route');
 const app = express();
 const port = 4000;
 
-var admin = require("firebase-admin");
-var serviceAccount = require("./serviceAccountKey.json");
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://ramazan-d4b60.firebaseio.com"
-});
-
 
 /**
  * Each request goes

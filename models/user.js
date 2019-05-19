@@ -6,10 +6,7 @@ const userSchema = mongoose.Schema({
     deviceOS: String,
     createdDate: String,
     enabled: String,
-    city: {
-        Id: Number,
-        Title: String
-    }
+    cityId: Number
 });
 
 module.exports =  mongoose.model('User', userSchema);
