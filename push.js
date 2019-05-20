@@ -12,6 +12,7 @@ const constants = require('./config/constants');
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount), databaseURL: "https://ramazan-d4b60.firebaseio.com" });
+process.env.TZ = 'Asia/Almaty';
 
 const findUsersByCity = (cityId = 2) => {    
     return new Promise((resolve, reject) => {
@@ -34,13 +35,11 @@ const sendPush = (deviceToken, payload) => {
 
 const log = data => {
     console.info(data); 
-    fs.appendFile('logs.txt', `${data} - ${moment().locale('uk').format('YYYY-MM-DD HH:mm:ss')} \n`, (err)=>{});
+    fs.appendFile('logs.txt', `${data} - ${moment().locale('kk').format('YYYY-MM-DD HH:mm:ss')} \n`, (err)=>{});
 }
 
 const start = () => {    
-    log(`App start`);
-
-    process.env.TZ = 'Asia/Almaty';
+    log(`App start`);    
     
     interval = setInterval(() => {
         
