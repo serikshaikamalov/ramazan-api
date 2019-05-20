@@ -62,7 +62,7 @@ const start = () => {
             // Отправляем пуши            
             users.forEach(user => sendPush(user.token, payload));            
         });
-    }, 6*1000);
+    }, 60*1000);
 }
 
 /**
