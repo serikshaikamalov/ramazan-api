@@ -31,8 +31,10 @@ const sendPush = (deviceToken, payload) => {
         .catch( error => console.log(`Error sending message: ${error}`));
 }
 
-const start = () => {
+const start = () => {    
     console.log(`App start`);
+
+    process.env.TZ = 'Asia/Almaty';
     
     interval = setInterval(() => {
         
