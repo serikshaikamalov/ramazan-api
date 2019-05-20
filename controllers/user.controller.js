@@ -39,11 +39,12 @@ exports.saveToken = (req, res, nex) =>{
         if(!user){ 
             User.create(newUser, (err, result)=>{
                 if(err) console.error(`User not saved`);
-                res.status(200).json("Added new users");
+                res.status(200).json("Added new user");
             });
         }else{
             User.update({token: token}, newUser, (err, raw)=>{
                 if(err) { console.error(`User.update() | error: ${err}`) }                                
+                res.status(200).json("Updated user date");
             });
         }
 
