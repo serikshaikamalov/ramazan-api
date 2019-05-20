@@ -31,9 +31,22 @@ exports.saveToken = (req, res, nex) =>{
         cityId: req.body.cityId
     });
 
-    User.create(newUser, (err, result)=>{
-        if(err) console.error(`User not saved`);
-        res.status(200).json("Added new users");
+    // If user not exist on db, add him
+    User.find({token: newUser.token}, (err, user)=>{
+
+        if(err){ console.error(`User.find() | ${err}`) }
+
+        if(!user){ 
+            User.create(newUser, (err, result)=>{
+                if(err) console.error(`User not saved`);
+                res.status(200).json("Added new users");
+            });
+        }else{
+            User.update({token: token}, newUser, (err, raw)=>{
+                if(err) { console.error(`User.update() | error: ${err}`) }                                
+            });
+        }
+
     });
-    
+                
 }
