@@ -17,34 +17,43 @@ exports.getUsers = (req, res, next) => {
 exports.saveToken = (req, res, nex) =>{
     console.log(`User | saveToken`);
         
-    console.log('Req', req.body);
+    // console.log('Req', req.body);
 
-    if(!res){
-        res.status(400).json('Wrong response');
+    if(!req.body){
+        res.status(400).json('Wrong request');
     }
 
-    let newUser = new User({ 
+    let userData = { 
         token: req.body.token, 
         deviceOS: req.body.deviceOS,
-        createdDate: req.body.createdDate,
+        createdDate: new Date().getTime().toString(),
         enabled: req.body.enabled,
         cityId: req.body.cityId
-    });
+    }
+
+    let newUser = new User(userData);
 
     // If user not exist on db, add him
-    User.find({token: newUser.token}, (err, user)=>{
+    User.findOne({token: req.body.token}, (err, userSingle)=>{
 
-        if(err){ console.error(`User.find() | ${err}`) }
-
-        if(!user){ 
+        if(err){ console.error(`User: not found | ${err}`) }
+        
+        if(!userSingle){
+            
             User.create(newUser, (err, result)=>{
-                if(err) console.error(`User not saved`);
-                res.status(200).json("Added new user");
+                if(err) console.error(`User: not saved`);
+
+                res.status(200).json("User: new");
             });
-        }else{
-            User.update({token: token}, newUser, (err, raw)=>{
-                if(err) { console.error(`User.update() | error: ${err}`) }                                
-                res.status(200).json("Updated user date");
+        }else{           
+            console.log(`Update user`);
+            
+            console.log(`USER: ${newUser}`);
+
+            User.updateOne({ "token": req.body.token}, userData, (err, raw)=>{
+                if(err) { console.error(`User.update() | error: ${err}`) }     
+
+                res.status(200).json(`User: updated`);
             });
         }
 
