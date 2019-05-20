@@ -1,4 +1,0 @@
-DB is connected - 2019-05-20 21:32:22 
-App start - 2019-05-20 21:32:22 
-DB is connected - 2019-05-20 21:44:10 
-App start - 2019-05-20 21:44:10 

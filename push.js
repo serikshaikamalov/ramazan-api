@@ -46,7 +46,7 @@ const start = () => {
         // Stop Interval
         if (new Date() == new Date('2019-06-05 00:00')) stopInterval();
 
-        const currentDate = moment().locale('uk').format('YYYY-MM-DD HH:mm'); log(`Date: ${currentDate}`);
+        const currentDate = moment().locale('kk').format('YYYY-MM-DD HH:mm'); log(`Date: ${currentDate}`);
 
         // Находим намаз и город по времени        
         let events = namazEventsByTime.filter(item => item.date == currentDate);

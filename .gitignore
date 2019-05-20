@@ -3,3 +3,4 @@ config/constants.js
 package-lock.json
 serviceAccountKey.json
 .vscode
+logs.txt
