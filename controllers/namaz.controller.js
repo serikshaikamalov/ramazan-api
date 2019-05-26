@@ -38,8 +38,8 @@ exports.getNamazByCity = async (req, res, next) => {
     if (req.query.year && req.query.longitude && req.query.latitude) {
 
         const year = req.query.year || new Date().getFullYear();
-        const longitude = req.query.longitude;
-        const latitude = req.query.latitude;           
+        const longitude = req.query.latitude;
+        const latitude = req.query.longitude;           
 
         // Config
         let prayTimes = new PrayerTime();
@@ -64,7 +64,7 @@ exports.getNamazByCity = async (req, res, next) => {
             
             var times = prayTimes.getTimes(d, [latitude, longitude], timeZone, 'auto','24h');
             result.push({
-                Date: `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`,
+                date: `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`,
                 Fajr: times.fajr,  
                 Sunrise: times.sunrise,
                 Dhuhr: times.dhuhr,
